@@ -1,0 +1,53 @@
+version: "3.9"
+
+services:
+  node1:
+    build: .
+    container_name: swarm-node1
+    privileged: true
+    networks: [lab]
+    environment:
+      START_DELAY: "3"
+      RELIABILITY: "0.98"
+      CHECK_INTERVAL: "10"
+      NETEM_DELAY_MS: "30"
+      NETEM_LOSS_PCT: "0.2"
+    volumes:
+      - node1-docker:/var/lib/docker
+
+  node2:
+    build: .
+    container_name: swarm-node2
+    privileged: true
+    networks: [lab]
+    environment:
+      START_DELAY: "10"
+      RELIABILITY: "0.92"
+      CHECK_INTERVAL: "10"
+      NETEM_DELAY_MS: "120"
+      NETEM_JITTER_MS: "40"
+      NETEM_LOSS_PCT: "1"
+      NETEM_RATE: "10mbit"
+    volumes:
+      - node2-docker:/var/lib/docker
+
+  node3:
+    build: .
+    container_name: swarm-node3
+    privileged: true
+    networks: [lab]
+    environment:
+      START_DELAY: "1"
+      RELIABILITY: "0.80"   # questo crasha spesso
+      CHECK_INTERVAL: "8"
+    volumes:
+      - node3-docker:/var/lib/docker
+
+networks:
+  lab:
+    driver: bridge
+
+volumes:
+  node1-docker:
+  node2-docker:
+  node3-docker:

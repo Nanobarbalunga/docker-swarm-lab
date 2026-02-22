@@ -1,0 +1,12 @@
+# Dati persistenti da non pushare
+
+
+# Configurazioni sensibili
+.env
+
+# Cache, logs, dipendenze (opzionale)
+**/node_modules/
+**/vendor/
+**/.DS_Store
+
+*.bak
