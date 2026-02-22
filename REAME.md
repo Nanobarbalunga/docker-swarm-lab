@@ -54,8 +54,8 @@ La rete tra i nodi è condivisa tramite bridge Docker.
 ### 1️⃣ Clonare il progetto
 
 ```bash
-git clone https://github.com/Nanobarbalunga/swarm-lab-simulator.git
-cd swarm-lab-simulator
+git clone https://github.com/Nanobarbalunga/docker-swarm-lab.git
+cd docker-swarm-lab
 
 ```
 
