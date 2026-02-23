@@ -61,6 +61,104 @@ cd docker-swarm-lab
 
 ---
 
+### 2️⃣  Collegamento ad uno Swarm esistente
+
+Recuperare il token dal manager:
+
+```bash
+docker swarm join-token worker -q
+```
+
+Connettere manualmente i nodi:
+//TODO...
+
+```bash
+docker swarm join \
+  --token <TOKEN> 
+```
+
+## 🔧 Opzioni dell'immagine
+
+### 🔗 Collegamento ad uno Swarm esistente
+
+```bash
+environment:
+  SWARM_JOIN_TOKEN: "<TOKEN>"
+  SWARM_MANAGER_ADDR: "192.168.1.10:2377"
+```
+
+### 🔥 Simulazione Crash
+
+Il parametro RELIABILITY determina la probabilità che il nodo rimanga attivo.
+
+Esempio:
+
+```bash
+1.0 → Nodo stabile
+
+0.95 → 5% probabilità crash ad ogni check
+
+0.80 → Nodo altamente instabile
+
+```
+
+Questo consente di osservare il comportamento del manager swarm nel ripristino automatico dei servizi.
+
+### 🌐 Simulazione Problemi di Rete
+
+Esempio configurazione:
+
+```bash
+environment:
+  NETEM_DELAY_MS: "120"
+  NETEM_JITTER_MS: "40"
+  NETEM_LOSS_PCT: "1"
+  NETEM_RATE: "10mbit"
+```
+
+Simula:
+
+- Alta latenza
+
+- Variazione di latenza
+
+- Perdita pacchetti
+
+- Banda limitata
+
+### Variabili d'ambiente
+
+É possibile modificare le opzioni dell'immagine utilizzando le variabili d'ambiente.
+
+#### Avvio
+
+| Variabile        | Descrizione                                   | Default |
+| ---------------- | --------------------------------------------- | ------- |
+| `START_DELAY`    | Ritardo in secondi prima dell'avvio di Docker | 0       |
+| `RELIABILITY`    | Affidabilità del nodo (0.0 – 1.0)             | 1.0     |
+| `CHECK_INTERVAL` | Intervallo di controllo crash                 | 10      |
+| `CRASH_MODE`     | Modalità crash (exit/reboot)                  | exit    |
+
+#### Simulazione di rete (tc netem)
+
+| Variabile         | Descrizione                   |
+| ----------------- | ----------------------------- |
+| `NETEM_DELAY_MS`  | Latenza in millisecondi       |
+| `NETEM_JITTER_MS` | Variazione latenza            |
+| `NETEM_LOSS_PCT`  | Percentuale perdita pacchetti |
+| `NETEM_RATE`      | Limitazione banda (es: 5mbit) |
+
+#### Swarm
+
+| Variabile              | Descrizione                   |
+| ---------------------- | ----------------------------- |
+| `SWARM_INIT`           | Se 1 inizializza swarm locale |
+| `SWARM_ADVERTISE_ADDR` | IP advertise                  |
+| `SWARM_JOIN_TOKEN`     | Token join                    |
+| `SWARM_MANAGER_ADDR`   | Indirizzo manager (IP:2377)   |
+
+---
+
 ## 📜 Licenza
 
 Questo progetto è distribuito sotto la licenza [GPL-2.0](LICENSE).
